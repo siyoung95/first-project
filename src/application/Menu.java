@@ -1,12 +1,16 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 
 public class Menu {
+	static Random random = new Random();
+	static int waitingNum = random.nextInt(100) + 1;
+	
 	Scanner scanner = new Scanner(System.in);
-	static ArrayList<Product> cart = new ArrayList<Product>();
+	static ArrayList<Product> cart = new ArrayList<Product>(); //
 
 	public static void Mainmenu() {
 		Scanner scanner = new Scanner(System.in);
@@ -32,9 +36,9 @@ public class Menu {
 			System.out.println("--------------------       ------------------       ----------------------");
 			System.out.println("=== 1.Hamburger  ===       ===   2.Side   ===       ===   3.Beverage   ===");
 			System.out.println("--------------------       ------------------       ----------------------");
-			System.out.println("             -------------------");
-			System.out.println("             ===    4.Cart   ===");
-			System.out.println("             -------------------");
+			System.out.println("--------------------       -------------------      ---------------------");
+			System.out.println("===    4.Cart    ===       ===  5.Pick Up  ===      ===     6.Exit    ===");
+			System.out.println("--------------------       -------------------      ---------------------");
 			
 
 			System.out.print("메뉴보기 >>");
@@ -135,6 +139,10 @@ public class Menu {
 					break;
 				} else if (click == 4) {
 					checkCart();
+				} else if (click == 5) {
+					pickUp();
+				} else if(click == 6) {
+					exit();
 				} else {
 					System.out.println("없는 메뉴입니다.");
 				}
@@ -147,34 +155,56 @@ public class Menu {
 		Scanner scanner = new Scanner(System.in);
 		int total = 0;
 		
-		for (Product each : cart) {
+		for (Product each : cart) { //cart라는 배열객체를 Product 타입의 배열을 하나씩 모두 출력하는 each 반복문
            total = total + each.getPrice();
         }
 		
 		for (Product each : cart) {
             System.out.printf("[장바구니] 음식 : %s, 가격 : %d\n", each.getName(), each.getPrice());
         }
-		System.out.println("총 결제금액은" + total + "입니다.");
-		System.out.print("결제하시곘습니까? ('y' or 'n')");
-		String click3 = scanner.nextLine();
-		if(click3 == "y") {
-			System.out.println("결제방식을 선택하세요>>");
-			int click4 = scanner.nextInt();
-			System.out.println("1.카드결제");
-			System.out.println("2.현금결제");
-			
-			if(click4 == 1) {
-				System.out.println("카드를 꽂아주세요.");
-			} else if (click4 == 2) {
-				System.out.println("현금을 넣어주세요.");
+		while(true) { //
+			System.out.println("총 결제금액은 " + total + "입니다.");
+			System.out.print("결제하시곘습니까? (y/n)");
+			String click3 = scanner.nextLine();
+			if(click3.equals("y")) {
+				while(true) {
+					System.out.print("결제할 금액을 입력하세요>>");
+					int click4 = scanner.nextInt();
+					
+					if(click4 == total) {
+						System.out.println("결제가 완료되었습니다.");
+						receipt();
+						break;
+					} else {
+						System.out.println("금액이 맞지않습니다.");
+					} 
+				}
+			} else if(click3.equals("n")) {
+				Order();  
 			} else {
 				System.out.println("없는 선택지 입니다.");
-			}
-		} else if(click3 == "n") {
-			
+			} break;
+		}	
+	}
+	
+	public static void receipt() {
+//		Random random = new Random();
+//		int waitingNum = random.nextInt(100) + 1; //1. waitingNum 를 class 멤버변수로 선언해줘라 
+		System.out.println("대기번호 : " + waitingNum);
+	}
+	
+	public static void pickUp() {
+//		int waitingNum = receipt().waitingNum; //2. 조건문을 달아 평소에 false 이도록 해놓고 클래스 멤버변수 boolean값 넣고 특정 조건을 충족했을때 true로 바꿈
+		if(waitingNum >= 1) {
+		System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 음식나왔습니다.");
 		} else {
-			System.out.println("없는 선택지 입니다.");
+			System.out.println("먼저 주문을 해주세요.");
+			Order();
 		}
 	}
-
+	
+	public static void exit() {
+		System.out.println("손님, 안녕히가세요");
+		System.exit(0);
+	}
 }
