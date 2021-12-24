@@ -6,11 +6,10 @@ import java.util.Scanner;
 
 
 public class Menu {
-	static Random random = new Random();
 	Scanner scanner = new Scanner(System.in);
 	
 	
-	int waitingNum = random.nextInt(100) + 1;
+	int[] waitingNum = new int[100];
 	ArrayList<Product> cart = new ArrayList<Product>(); //
 
 	public void Mainmenu() {
@@ -188,23 +187,39 @@ public class Menu {
 	}
 	
 	public void receipt() {
+		int i = 0;
+		int j = 1;
+		waitingNum[i] = j;
 		System.out.println("대기번호 : " + waitingNum);
+		
+//		int waitingNum++;
+		// Q. CheckCart() 에서 결제를 완료하면 waitingNum 에 1번부터 순차적으로 번호가 생성됨
+		
 	}
 	
 	public void pickUp() {
-		//2. 조건문을 달아 평소에 false 이도록 해놓고 클래스 멤버변수 boolean값 넣고 특정 조건을 충족했을때 true로 바꿈
 		System.out.print("대기번호가 몇번이세요?");
-		int numckeck = scanner.nextInt();
+		int numcheck = scanner.nextInt();
 		
-		String cartname = cart.get(0).toString();
 		
-		if(numckeck == waitingNum) {
-		System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 음식나왔습니다.");
-		// Arraylist cart에 저장한 배열의 인덱스 0,1,2 찾기 (정확히는 cart에 담겨진 Product 클래스의 name만 빼내오고 싶음)
-		// cart.get(0).toString(); X
-		// cartname = cart.get(0).toString(); X
+		if(numcheck == waitingNum) {
+			String cartnames = ""; //
+			for(Product s : cart) {
+				cartnames += s.toString();
+			};
+			
+		System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 " + cartnames +"나왔습니다.");
+		// Q. Arraylist cart에 저장한 배열의 인덱스 0,1,2 찾기 (정확히는 cart에 담겨진 Product 클래스의 name만 빼내오고 싶음)
 		
-		} else if(numckeck != waitingNum){
+		// 1. Arraylist 에서 하나의 인덱스 가져오기
+		// cart.get(0); > 해당 객체의 0번 인덱스의 주소값을 가져옴  //String cartname = cart.get(0).toString();
+		// cart.get(0).toString(); > 해당 객체의 0번 인덱스의 주소값을 문자로 변환시켜 가져옴 but, 객체의 class에서 override로 toString()메서드를 정의해서 어떤 값으로 가져올지 정해줘야 cart.get(0).toString();같은 형태로 사용가능
+		
+		// 2. Arraylist 에서 저장되어 있는 모든 인덱스 가져오기 > foreach문, 람다식 사용
+		// foreach문의 선언 : for (데이터타입 for문이름 : 객체이름) { 출력구간 } 
+		// 람다식 선언 : 객체이름.foreach(for문이름 -> System.out.println(for문이름)); > 람다식 사용이유 : for 반복문을 하나의 변수에 집어넣고 변수로 출력하기 위해서
+		
+		} else if(numcheck != waitingNum){
 			System.out.println("대기번호를 확인해주세요.");
 		} else{
 			System.out.println("주문된 음식이 없습니다.");
