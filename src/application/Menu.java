@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 public class Menu {
 	static Random random = new Random();
-	static int waitingNum = random.nextInt(100) + 1;
-	
 	Scanner scanner = new Scanner(System.in);
-	static ArrayList<Product> cart = new ArrayList<Product>(); //
+	
+	
+	int waitingNum = random.nextInt(100) + 1;
+	ArrayList<Product> cart = new ArrayList<Product>(); //
 
-	public static void Mainmenu() {
-		Scanner scanner = new Scanner(System.in);
+	public void Mainmenu() {
 
 		System.out.println("자바버거에 오신것을 환영합니다^^");
 		System.out.println();
@@ -30,8 +30,7 @@ public class Menu {
 		}
 	}
 
-	public static void Order() {
-		Scanner scanner = new Scanner(System.in);
+	public void Order() {
 		while (true) {
 			System.out.println("--------------------       ------------------       ----------------------");
 			System.out.println("=== 1.Hamburger  ===       ===   2.Side   ===       ===   3.Beverage   ===");
@@ -151,8 +150,7 @@ public class Menu {
 			
 		}
 	}
-	public static void checkCart() {
-		Scanner scanner = new Scanner(System.in);
+	public void checkCart() {
 		int total = 0;
 		
 		for (Product each : cart) { //cart라는 배열객체를 Product 타입의 배열을 하나씩 모두 출력하는 each 반복문
@@ -165,6 +163,8 @@ public class Menu {
 		while(true) { //
 			System.out.println("총 결제금액은 " + total + "입니다.");
 			System.out.print("결제하시곘습니까? (y/n)");
+			System.out.println();
+			scanner.nextLine();
 			String click3 = scanner.nextLine();
 			if(click3.equals("y")) {
 				while(true) {
@@ -187,23 +187,32 @@ public class Menu {
 		}	
 	}
 	
-	public static void receipt() {
-//		Random random = new Random();
-//		int waitingNum = random.nextInt(100) + 1; //1. waitingNum 를 class 멤버변수로 선언해줘라 
+	public void receipt() {
 		System.out.println("대기번호 : " + waitingNum);
 	}
 	
-	public static void pickUp() {
-//		int waitingNum = receipt().waitingNum; //2. 조건문을 달아 평소에 false 이도록 해놓고 클래스 멤버변수 boolean값 넣고 특정 조건을 충족했을때 true로 바꿈
-		if(waitingNum >= 1) {
+	public void pickUp() {
+		//2. 조건문을 달아 평소에 false 이도록 해놓고 클래스 멤버변수 boolean값 넣고 특정 조건을 충족했을때 true로 바꿈
+		System.out.print("대기번호가 몇번이세요?");
+		int numckeck = scanner.nextInt();
+		
+		String cartname = cart.get(0).toString();
+		
+		if(numckeck == waitingNum) {
 		System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 음식나왔습니다.");
-		} else {
-			System.out.println("먼저 주문을 해주세요.");
+		// Arraylist cart에 저장한 배열의 인덱스 0,1,2 찾기 (정확히는 cart에 담겨진 Product 클래스의 name만 빼내오고 싶음)
+		// cart.get(0).toString(); X
+		// cartname = cart.get(0).toString(); X
+		
+		} else if(numckeck != waitingNum){
+			System.out.println("대기번호를 확인해주세요.");
+		} else{
+			System.out.println("주문된 음식이 없습니다.");
 			Order();
 		}
 	}
 	
-	public static void exit() {
+	public void exit() {
 		System.out.println("손님, 안녕히가세요");
 		System.exit(0);
 	}

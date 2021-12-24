@@ -3,7 +3,8 @@ package application;
 public class App {
 
 	public static void main(String[] args) {
-		Menu.Mainmenu();
+		Menu menu = new Menu();
+		menu.Mainmenu();
 	}
 
 }
