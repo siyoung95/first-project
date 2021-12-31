@@ -1,16 +1,15 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 
 public class Menu {
 	Scanner scanner = new Scanner(System.in);
-	
-	
-	int[] waitingNum = new int[100];
 	ArrayList<Product> cart = new ArrayList<Product>(); //
+	ArrayList<Integer> orderlist = new ArrayList<Integer>();
+	
+	int waitingNum = 0;
 
 	public void Mainmenu() {
 
@@ -162,7 +161,6 @@ public class Menu {
 		while(true) { //
 			System.out.println("총 결제금액은 " + total + "입니다.");
 			System.out.print("결제하시곘습니까? (y/n)");
-			System.out.println();
 			scanner.nextLine();
 			String click3 = scanner.nextLine();
 			if(click3.equals("y")) {
@@ -172,6 +170,8 @@ public class Menu {
 					
 					if(click4 == total) {
 						System.out.println("결제가 완료되었습니다.");
+						waitingNum++;
+						orderlist.add(waitingNum);
 						receipt();
 						break;
 					} else {
@@ -187,28 +187,23 @@ public class Menu {
 	}
 	
 	public void receipt() {
-		int i = 0;
-		int j = 1;
-		waitingNum[i] = j;
 		System.out.println("대기번호 : " + waitingNum);
-		
-//		int waitingNum++;
-		// Q. CheckCart() 에서 결제를 완료하면 waitingNum 에 1번부터 순차적으로 번호가 생성됨
-		
 	}
 	
 	public void pickUp() {
 		System.out.print("대기번호가 몇번이세요?");
 		int numcheck = scanner.nextInt();
+		int numcheck2 = numcheck -1;
 		
-		
-		if(numcheck == waitingNum) {
-			String cartnames = ""; //
-			for(Product s : cart) {
-				cartnames += s.toString();
-			};
+		if(numcheck == orderlist.get(numcheck2)) {
+			System.out.println("대기번호 " + orderlist.get(numcheck2) + "번 고객님 주문하신 음식나왔습니다.");
+			} else if(numcheck != orderlist.get(numcheck2)){
+				System.out.println("대기번호를 확인해주세요.");
+			} else{
+				System.out.println("주문된 음식이 없습니다.");
+				Order();
+			}
 			
-		System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 " + cartnames +"나왔습니다.");
 		// Q. Arraylist cart에 저장한 배열의 인덱스 0,1,2 찾기 (정확히는 cart에 담겨진 Product 클래스의 name만 빼내오고 싶음)
 		
 		// 1. Arraylist 에서 하나의 인덱스 가져오기
@@ -219,16 +214,12 @@ public class Menu {
 		// foreach문의 선언 : for (데이터타입 for문이름 : 객체이름) { 출력구간 } 
 		// 람다식 선언 : 객체이름.foreach(for문이름 -> System.out.println(for문이름)); > 람다식 사용이유 : for 반복문을 하나의 변수에 집어넣고 변수로 출력하기 위해서
 		
-		} else if(numcheck != waitingNum){
-			System.out.println("대기번호를 확인해주세요.");
-		} else{
-			System.out.println("주문된 음식이 없습니다.");
-			Order();
-		}
-	}
-	
+		} 
 	public void exit() {
 		System.out.println("손님, 안녕히가세요");
 		System.exit(0);
 	}
 }
+	
+
+
