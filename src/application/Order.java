@@ -1,21 +1,29 @@
 package application;
 
+import java.util.ArrayList;
+
 public class Order {
-	int count = 0;
-	int id;
+	private ArrayList<Product> cart = new ArrayList<>();
+	
+	public Order(ArrayList<Product> cart) {
+		this.cart.addAll(cart);
+	}
+	
+	public ArrayList<Product> getCart() {
+		return cart;
+	}
 
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
+	public void setCart(ArrayList<Product> cart) {
+		this.cart = cart;
 	}
 
-	
-	public Order() {
-		count = count++;
-		id = count;
+	@Override
+	public String toString() {
+		String s = "";
+		for(Product p : cart ) {
+			s += p.toString();
+		}
+		return s;
 	}
-	
+
 }

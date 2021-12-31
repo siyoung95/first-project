@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Menu {
 	Scanner scanner = new Scanner(System.in);
 	ArrayList<Product> cart = new ArrayList<Product>(); //
-	ArrayList<Integer> orderlist = new ArrayList<Integer>();
+	ArrayList<Order> orderlist = new ArrayList<Order>();
 	
 	int waitingNum = 0;
 
@@ -37,7 +37,6 @@ public class Menu {
 			System.out.println("===    4.Cart    ===       ===  5.Pick Up  ===      ===     6.Exit    ===");
 			System.out.println("--------------------       -------------------      ---------------------");
 			
-
 			System.out.print("메뉴보기 >>");
 			int click = scanner.nextInt();
 			while (true) {
@@ -171,7 +170,6 @@ public class Menu {
 					if(click4 == total) {
 						System.out.println("결제가 완료되었습니다.");
 						waitingNum++;
-						orderlist.add(waitingNum);
 						receipt();
 						break;
 					} else {
@@ -188,33 +186,34 @@ public class Menu {
 	
 	public void receipt() {
 		System.out.println("대기번호 : " + waitingNum);
+		
+		orderlist.add(new Order(cart));
+		for(Product p : cart) {
+			System.out.println(p.toString());
+		}
+		cart.clear();
 	}
 	
 	public void pickUp() {
 		System.out.print("대기번호가 몇번이세요?");
 		int numcheck = scanner.nextInt();
 		int numcheck2 = numcheck -1;
+		Order c = orderlist.get(numcheck2);
+		c.getCart();
+//		orderlist.get(numcheck2)
 		
-		if(numcheck == orderlist.get(numcheck2)) {
-			System.out.println("대기번호 " + orderlist.get(numcheck2) + "번 고객님 주문하신 음식나왔습니다.");
-			} else if(numcheck != orderlist.get(numcheck2)){
+		if(numcheck == waitingNum) {
+			System.out.println("대기번호 " + waitingNum + "번 고객님 주문하신 "+ c.getCart().toString() + "음식나왔습니다.");
+			} else if(numcheck != waitingNum){
 				System.out.println("대기번호를 확인해주세요.");
 			} else{
 				System.out.println("주문된 음식이 없습니다.");
 				Order();
 			}
 			
-		// Q. Arraylist cart에 저장한 배열의 인덱스 0,1,2 찾기 (정확히는 cart에 담겨진 Product 클래스의 name만 빼내오고 싶음)
-		
-		// 1. Arraylist 에서 하나의 인덱스 가져오기
-		// cart.get(0); > 해당 객체의 0번 인덱스의 주소값을 가져옴  //String cartname = cart.get(0).toString();
-		// cart.get(0).toString(); > 해당 객체의 0번 인덱스의 주소값을 문자로 변환시켜 가져옴 but, 객체의 class에서 override로 toString()메서드를 정의해서 어떤 값으로 가져올지 정해줘야 cart.get(0).toString();같은 형태로 사용가능
-		
-		// 2. Arraylist 에서 저장되어 있는 모든 인덱스 가져오기 > foreach문, 람다식 사용
-		// foreach문의 선언 : for (데이터타입 for문이름 : 객체이름) { 출력구간 } 
-		// 람다식 선언 : 객체이름.foreach(for문이름 -> System.out.println(for문이름)); > 람다식 사용이유 : for 반복문을 하나의 변수에 집어넣고 변수로 출력하기 위해서
-		
 		} 
+	
+	
 	public void exit() {
 		System.out.println("손님, 안녕히가세요");
 		System.exit(0);
